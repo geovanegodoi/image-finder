@@ -11,6 +11,8 @@ Image finder app example from Traversy Media masterclass using REACT with PixaBa
 
 ## Concepts
 - Componentization
+- Context API
+- Custom Hooks
 
 ## Screenview
 ![Expense Tracker](screenshot.png)
