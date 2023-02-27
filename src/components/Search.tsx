@@ -1,48 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import {
     Box,
     FormControl,
     InputLabel,
     MenuItem,
     Select,
-    SelectChangeEvent,
     TextField,
 } from "@mui/material";
-import { ImagesContext } from "../contexts/ImagesContext";
+import useSearch from "../hooks/useSearch";
 
 function Search() {
-    const [state, setState] = useState({
-        searchText: "",
-        amount: 10,
-        apiUrl: "https://pixabay.com/api",
-        apiKey: "33962117-61f7d19c591fea9e6fd324ffa",
-    });
-    const { loadImages } = useContext(ImagesContext);
-
-    const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setState((prev) => ({
-            ...prev,
-            searchText: e.target.value,
-        }));
-    };
-
-    const handleSelectChange = (e: SelectChangeEvent<number>) => {
-        setState((prev) => ({
-            ...prev,
-            amount: e.target.value as number,
-        }));
-    };
-
-    useEffect(() => {
-        if (state.searchText === "") return;
-        axios
-            .get(
-                `${state.apiUrl}/?key=${state.apiKey}&q=${state.searchText}&image_type=photo&per_page=${state.amount}&safesearch=true`
-            )
-            .then((res) => loadImages(res.data.hits))
-            .catch((err) => console.log(err));
-    }, [state.searchText, state.amount]);
+    const { searchText, amount, handleTextChange, handleAmountChange } =
+        useSearch();
 
     return (
         <Box sx={{ display: "flex" }}>
@@ -52,7 +21,7 @@ function Search() {
                 variant="filled"
                 size="small"
                 sx={{ width: "80%" }}
-                value={state.searchText}
+                value={searchText}
                 onChange={handleTextChange}
             />
             <FormControl variant="filled" sx={{ width: "20%" }} size="small">
@@ -62,12 +31,14 @@ function Search() {
                     label="Amount"
                     variant="filled"
                     size="small"
-                    value={state.amount}
-                    onChange={handleSelectChange}
+                    value={amount}
+                    onChange={handleAmountChange}
                 >
                     <MenuItem value={10}>10</MenuItem>
                     <MenuItem value={20}>20</MenuItem>
                     <MenuItem value={30}>30</MenuItem>
+                    <MenuItem value={40}>40</MenuItem>
+                    <MenuItem value={50}>50</MenuItem>
                 </Select>
             </FormControl>
         </Box>
